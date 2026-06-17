@@ -1,0 +1,215 @@
+@use '@styles' as *;
+
+.login-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+
+  &__background {
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(135deg, #0f172a 0%, #1e3a5f 45%, #2563eb 100%);
+    z-index: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.15) 0%, transparent 40%);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+  }
+
+  &__card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem 2rem;
+    background: #fff;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+  }
+
+  &__brand {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+    border-radius: $radius-md;
+    color: #fff;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $color-text;
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: $color-text-muted;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  &__error {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: $color-error;
+    background: $color-error-bg;
+    border: 1px solid #fecaca;
+    border-radius: $radius-sm;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $color-text;
+    }
+
+    input {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      color: $color-text;
+      background: #f8fafc;
+      border: 1px solid $color-border;
+      border-radius: $radius-sm;
+      outline: none;
+      transition: border-color $transition, box-shadow $transition, background $transition;
+
+      &::placeholder {
+        color: #94a3b8;
+      }
+
+      &:hover:not(:disabled) {
+        border-color: #cbd5e1;
+      }
+
+      &:focus {
+        background: #fff;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__submit {
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+    border: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: transform $transition, box-shadow $transition, opacity $transition;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  &__hint {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid $color-border;
+  }
+
+  &__hint-title {
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    color: $color-text-muted;
+  }
+
+  &__hint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    color: $color-text-muted;
+
+    li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    code {
+      padding: 0.15rem 0.4rem;
+      font-size: 0.75rem;
+      background: #f1f5f9;
+      border-radius: 4px;
+      color: $color-text;
+    }
+  }
+
+  &__hint-role {
+    min-width: 4.75rem;
+    font-weight: 500;
+    color: $color-text;
+    text-align: right;
+  }
+}
