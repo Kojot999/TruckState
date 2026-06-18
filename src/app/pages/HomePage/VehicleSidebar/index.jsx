@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { assignVehicleToGroup, getAllPosts } from '@api/fleet';
 import { VEHICLE_TYPES } from '@app/utils/vehicleTypes';
 
@@ -96,17 +96,6 @@ function VehicleSidebar({
 
   const useGroupedLayout = groups.length > 0;
   const canDrag = isManager && useGroupedLayout;
-
-  useEffect(() => {
-    setExpandedGroups((prev) => {
-      const next = new Set(prev);
-      groups.forEach((group) => next.add(group.id));
-      if (useGroupedLayout) {
-        next.add(UNGROUPED_ID);
-      }
-      return next;
-    });
-  }, [groups, useGroupedLayout]);
 
   const vehiclesByGroup = useMemo(() => {
     const map = { [UNGROUPED_ID]: [] };

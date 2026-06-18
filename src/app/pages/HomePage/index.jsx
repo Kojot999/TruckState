@@ -14,6 +14,7 @@ import AddPostForm from '@components/AddPostForm';
 import UserManagementPanel from '@components/UserManagementPanel';
 import CreateGroupModal from '@components/CreateGroupModal';
 import VehicleSidebar from './VehicleSidebar';
+import FullScaleView from './FullScaleView';
 import { VEHICLE_TYPES } from '@app/utils/vehicleTypes';
 import {
   canAddPost,
@@ -21,12 +22,8 @@ import {
   canManageVehicles,
   canManageUsers,
 } from '@app/utils/permissions';
+import { formatPostDate, getTypeLabel, POST_FILTERS, VIEW_MODES } from './utils';
 import './style.scss';
-
-const POST_FILTERS = {
-  unresolved: 'nierozwiązane',
-  resolved: 'rozwiązane',
-};
 
 function getInitials(name) {
   return name
@@ -35,20 +32,6 @@ function getInitials(name) {
     .join('')
     .slice(0, 2)
     .toUpperCase();
-}
-
-function formatPostDate(isoDate) {
-  return new Intl.DateTimeFormat('pl-PL', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(isoDate));
-}
-
-function getTypeLabel(type) {
-  return type === 'problem' ? 'Problem' : 'Informacja';
 }
 
 function HomePage() {
@@ -62,6 +45,7 @@ function HomePage() {
   const [newPlate, setNewPlate] = useState('');
   const [newType, setNewType] = useState('');
   const [vehicleError, setVehicleError] = useState('');
+  const [viewMode, setViewMode] = useState(VIEW_MODES.group);
 
   const refresh = () => setRefreshKey((k) => k + 1);
 
@@ -146,6 +130,26 @@ function HomePage() {
           <h1>TruckState</h1>
           <p>Panel zarządzania flotą</p>
         </div>
+
+        <nav className="home-page__view-tabs" aria-label="Wybór widoku">
+          <button
+            type="button"
+            className={`home-page__view-tab${viewMode === VIEW_MODES.group ? ' home-page__view-tab--active' : ''}`}
+            onClick={() => setViewMode(VIEW_MODES.group)}
+            aria-selected={viewMode === VIEW_MODES.group}
+          >
+            Widok grupowy
+          </button>
+          <button
+            type="button"
+            className={`home-page__view-tab${viewMode === VIEW_MODES.fullScale ? ' home-page__view-tab--active' : ''}`}
+            onClick={() => setViewMode(VIEW_MODES.fullScale)}
+            aria-selected={viewMode === VIEW_MODES.fullScale}
+          >
+            Widok pełnej skali
+          </button>
+        </nav>
+
         <div className="home-page__user">
           {canManageUsers(user.role) && (
             <button
@@ -166,6 +170,16 @@ function HomePage() {
         </div>
       </header>
 
+      {viewMode === VIEW_MODES.fullScale ? (
+        <FullScaleView
+          vehicles={vehicles}
+          groups={vehicleGroups}
+          usersById={usersById}
+          isModerator={isModerator}
+          refreshKey={refreshKey}
+          onRefresh={refresh}
+        />
+      ) : (
       <div className="home-page__layout">
         <VehicleSidebar
           vehicles={vehicles}
@@ -364,6 +378,7 @@ function HomePage() {
           )}
         </section>
       </div>
+      )}
 
       {showUserPanel && (
         <UserManagementPanel
